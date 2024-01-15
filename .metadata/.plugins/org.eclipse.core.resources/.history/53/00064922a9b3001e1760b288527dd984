@@ -1,0 +1,10 @@
+package com.nunessports.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nunessports.model.Products;
+
+public interface ProductsRepository extends JpaRepository<Products, Long>{
+	
+
+}
