@@ -1,5 +1,6 @@
 package com.nunessports.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
@@ -9,16 +10,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Products {
+public class Products implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(nullable = false, updatable = false)
 	private long id;
-	
-	@Column(nullable = false)
 	private String name;
 	private String description;
 	
-	@Column(nullable = false, precision = 10, scale = 2)
+	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
 	
 	public Products() {
@@ -36,32 +36,32 @@ public class Products {
 		return id;
 	}
 	
-	public long setId(long id) {
-		return this.id = id;
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public String setName(String name) {
-		return this.name;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getDescription() {
 		return description;
 	}
 	
-	public String setDescription(String description) {
-		return this.description = description;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public BigDecimal getPrice() {
 		return price;
 	}
 	
-	public BigDecimal setPrice(BigDecimal price) {
-		return this.price = price;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 	
 	public String toString() {

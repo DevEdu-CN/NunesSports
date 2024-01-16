@@ -34,26 +34,26 @@ public class ProductsController {
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	
-	@GetMapping("/find/{id}")
+	@GetMapping("/find/id/{id}")
 	public ResponseEntity<Products> getIdProducts(@PathVariable("id")Long id){
 		Products products = productsService.findProductsById(id);
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	
-	@GetMapping("/find/{name}")
+	@GetMapping("/find/name/{name}")
 	public ResponseEntity<Products> getNameProducts(@PathVariable("name")String name){
 		Products products = productsService.findProductsByName(name);
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	
-	@GetMapping("/find/{lowestPrice}-{highestPrice}")
+	@GetMapping("/find/price/{lowestPrice}-{highestPrice}")
 	public ResponseEntity<List<Products>> getPriceProducts(@PathVariable("lowestPrice")BigDecimal lowest,@PathVariable("highestPrice")BigDecimal highest ){
 		List<Products> products = productsService.findProductsByPrice(lowest, highest);
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<Products> addEmployee(@RequestBody Products products){
+	public ResponseEntity<Products> addProducts(@RequestBody Products products){
 		Products newProducts = productsService.addProducts(products);
 		return new ResponseEntity<>(newProducts, HttpStatus.CREATED);
 	}
