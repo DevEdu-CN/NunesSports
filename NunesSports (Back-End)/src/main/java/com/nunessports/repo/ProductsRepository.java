@@ -14,6 +14,6 @@ public interface ProductsRepository extends JpaRepository<Products, Long>{
 	Optional<Products> findProductsById(long id);
 	Optional<Products> findProductsByName(String name);
 	Optional<Products> deleteProductsById(long id);
-	List<Optional<Products>> findProductsByPriceBetween(BigDecimal lowest, BigDecimal highest);
-	
+	List<Products> findProductsByPriceBetween(BigDecimal lowest, BigDecimal highest);
+	List<Optional<Products>> findProductsByNameAndPriceBetween(String name, BigDecimal lowest, BigDecimal highest );
 }
