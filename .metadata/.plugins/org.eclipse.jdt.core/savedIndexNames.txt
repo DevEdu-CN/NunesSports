@@ -39,8 +39,8 @@ INDEX VERSION 1.132+C:\Users\luize\OneDrive\Repositório\Java\NunesSport(Teste Wa
 3118942778.index
 1600570547.index
 4208641506.index
-4289049355.index
 3355620111.index
+4289049355.index
 34699062.index
 3444728553.index
 3856498375.index
@@ -51,8 +51,8 @@ INDEX VERSION 1.132+C:\Users\luize\OneDrive\Repositório\Java\NunesSport(Teste Wa
 3997543805.index
 1606250701.index
 3827664712.index
-347057724.index
 1137265632.index
+347057724.index
 4272317387.index
 1992308742.index
 1844189482.index
