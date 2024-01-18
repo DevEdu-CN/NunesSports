@@ -11,7 +11,6 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // handle specific exceptions
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
                                                                         WebRequest webRequest){
@@ -20,4 +19,5 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    
 }

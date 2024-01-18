@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.nunessports.exception.userNotFoundException;
+import com.nunessports.exception.ResourceNotFoundException;
 import com.nunessports.model.Products;
 import com.nunessports.repo.ProductsRepository;
 
@@ -28,13 +28,12 @@ public class ProductsService {
 	
 	public Products findProductsById(long id) {
 		return productsRepository.findById(id)
-				.orElseThrow(() -> new userNotFoundException("Product by Id " + id + " was not found."));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with %s not found ", id)));
 	}
 	
 	public Products findProductsByName(String name) {
 		return productsRepository.findProductsByName(name)
-				.orElseThrow(() -> new userNotFoundException("Product by name " + name + " was not found."));
-	}
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with %s not found ", name)));	}
 	
 	public List<Products> findProductsByPrice(BigDecimal lowestPrice, BigDecimal highestPrice){
 		return productsRepository
