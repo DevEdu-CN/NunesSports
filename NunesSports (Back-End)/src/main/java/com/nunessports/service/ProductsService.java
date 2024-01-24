@@ -28,12 +28,13 @@ public class ProductsService {
 	
 	public Products findProductsById(long id) {
 		return productsRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with %s not found ", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with ID %s not found ", id)));
 	}
 	
 	public Products findProductsByName(String name) {
 		return productsRepository.findProductsByName(name)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with %s not found ", name)));	}
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with name %s not found ", name)));	
+		}
 	
 	public List<Products> findProductsByPrice(BigDecimal lowestPrice, BigDecimal highestPrice){
 		return productsRepository
@@ -41,15 +42,20 @@ public class ProductsService {
 	}
 	
 	public Products updateProducts(long id, Products updateProducts) {
-		Products currentProducts = productsRepository.findById(id).get();
-		currentProducts.setName(updateProducts.getName());
-		currentProducts.setDescription(updateProducts.getDescription());
-		currentProducts.setPrice(updateProducts.getPrice());
-		return currentProducts;
+	    try {
+	        Products currentProducts = findProductsById(id);
+	        currentProducts.setName(updateProducts.getName());
+	        currentProducts.setDescription(updateProducts.getDescription());
+	        currentProducts.setPrice(updateProducts.getPrice());
+	        return productsRepository.save(currentProducts);
+	    } catch (ResourceNotFoundException e) {
+	        throw new ResourceNotFoundException(String.format("Product with ID %s not found ", id));
+	    }
 	}
 	
 	public void deleteProducts(long id) {
-		productsRepository.deleteProductsById(id);
+		productsRepository.deleteProductsById(id)
+		.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with ID %s not found ", id)));;
 	
 	}
 	
