@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.nunessports.exception.ResourceNotFoundException;
@@ -22,24 +24,46 @@ public class ProductsService {
 		return productsRepository.save(products);
 	}
 	
-	public List<Products> findAllProducts() {
-		return productsRepository.findAll();
+	public Page<Products> findAllProducts(Pageable paging) {
+		return productsRepository.findAll(paging);
 	}
 	
 	public Products findProductsById(long id) {
 		return productsRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with ID %s not found ", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with %s not found ", id)));
 	}
 	
-	public Products findProductsByName(String name) {
-		return productsRepository.findProductsByName(name)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Product with name %s not found ", name)));	
+	public Page<Products> findProductsByFilter(
+			String name,
+			BigDecimal lowestPrice, BigDecimal highestPrice,
+			Pageable paging) {
+		Page<Products> productsList = productsRepository
+				.findProductsByNameAndPriceBetween(name, lowestPrice, highestPrice, paging);
+		
+	    if (productsList.isEmpty()) {
+	        throw new ResourceNotFoundException(String.format(
+	        		"No products found with name %s and price between %f and %f ",
+	        		name, lowestPrice, highestPrice));
+	    }
+
+	    return productsList;
 		}
 	
-	public List<Products> findProductsByPrice(BigDecimal lowestPrice, BigDecimal highestPrice){
-		return productsRepository
-				.findProductsByPriceBetween(lowestPrice, highestPrice);
-	}
+	public Page<Products> findProductsByPrice(
+			BigDecimal lowestPrice, 
+			BigDecimal highestPrice,
+			Pageable paging) {
+		Page<Products> productsList = productsRepository
+				.findProductsByPriceBetween(lowestPrice, highestPrice, paging);
+		
+	    if (productsList.isEmpty()) {
+	        throw new ResourceNotFoundException(String.format(
+	        		"No products found with price between %f and %f ",
+	        		lowestPrice, highestPrice));
+	    }
+
+	    return productsList;
+		}
 	
 	public Products updateProducts(long id, Products updateProducts) {
 	    try {
@@ -49,7 +73,7 @@ public class ProductsService {
 	        currentProducts.setPrice(updateProducts.getPrice());
 	        return productsRepository.save(currentProducts);
 	    } catch (ResourceNotFoundException e) {
-	        throw new ResourceNotFoundException(String.format("Product with ID %s not found ", id));
+	        throw new ResourceNotFoundException(String.format("Product with ID: %s not found ", id));
 	    }
 	}
 	

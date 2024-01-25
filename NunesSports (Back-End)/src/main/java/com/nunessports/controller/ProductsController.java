@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +23,7 @@ import com.nunessports.model.Products;
 import com.nunessports.service.ProductsService;
 
 @RestController
-@RequestMapping("/Products")
+@RequestMapping("/Products/v1")
 public class ProductsController {
 	private final ProductsService productsService;
 	
@@ -29,27 +32,39 @@ public class ProductsController {
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<Products>> getAllProducts(){
-		List<Products> products = productsService.findAllProducts();
+	public ResponseEntity<Page<Products>> getAllProducts(
+			@RequestParam(defaultValue = "0")int page,
+	        @RequestParam(defaultValue = "5")int size){
+		Pageable paging = PageRequest.of(page, size);
+		Page<Products> products = productsService.findAllProducts(paging);
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	
 	@GetMapping("/find/{id}")
-	public ResponseEntity<Products> getIdProducts(@PathVariable("id")Long id){
+	public ResponseEntity<Products> getIdProducts(
+			@PathVariable("id")Long id){
 		Products products = productsService.findProductsById(id);
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	
 	@GetMapping("/find")
-	public ResponseEntity<Products> getNameProducts(@RequestParam("name")String name){
-		Products products = productsService.findProductsByName(name);
-		return new ResponseEntity<>(products, HttpStatus.OK);
-	}
-	
-	@GetMapping("/find/price/{lowestPrice}-{highestPrice}")
-	public ResponseEntity<List<Products>> getPriceProducts(@RequestParam("lowestPrice")BigDecimal lowest, 
-			@RequestParam("highestPrice")BigDecimal highest ){
-		List<Products> products = productsService.findProductsByPrice(lowest, highest);
+	public ResponseEntity<Page<Products>> getNameProducts(
+			@RequestParam(name = "name", required = false)String name,
+			@RequestParam(name = "lowestPrice", defaultValue = "0")BigDecimal lowest, 
+			@RequestParam(name = "highestPrice", defaultValue = "31500")BigDecimal highest,
+			@RequestParam(defaultValue = "0", name = "page")int page,
+	        @RequestParam(defaultValue = "5", name = "size")int size){
+		Page<Products> products;
+		Pageable paging = PageRequest.of(page, size);
+		
+		if(name != null) {
+		products = productsService
+				.findProductsByFilter(name, lowest, highest, paging);
+		}
+		else {
+			products = productsService
+					.findProductsByPrice(lowest, highest, paging);
+		}
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 	

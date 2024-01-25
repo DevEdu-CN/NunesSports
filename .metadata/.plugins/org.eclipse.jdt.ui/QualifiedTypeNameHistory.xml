@@ -28,4 +28,7 @@
     <fullyQualifiedTypeName name="com.nunessports.exception.ResourceNotFoundException"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+    <fullyQualifiedTypeName name="org.hibernate.query.Page"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable"/>
+    <fullyQualifiedTypeName name="org.springframework.data.domain.Page"/>
 </qualifiedTypeNameHistroy>
