@@ -1,1 +1,21 @@
-<p>app works!</p>
+<main>
+    <table>
+        <thead> 
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>  
+            </tr>  
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of productsList$">
+                <td>{{product.id}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.price}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</main>

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Products } from './products';
+import {Pagination } from './pagination';
 import { Observable } from 'rxjs';
+import { ApiResponse } from './apiResponse';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +14,11 @@ export class ProductService {
     constructor(private httpClient: HttpClient){}
     url: string = "http://localhost:8080/Products/v1";
 
-    public getAllProducts(): Observable<Products[]>{
-      return this.httpClient.get<Products[]>(`${this.url}`);
+    public getAllProducts(): Observable<ApiResponse<Products[], Pagination>>{
+      return this.httpClient.get<ApiResponse<Products[], Pagination>>(`${this.url}/all`)
     };
 
-    public readProduct(id: number): Observable<Products>{
+    public readProductById(id: number): Observable<Products>{
       return this.httpClient.get<Products>(`${this.url}/find/${id}`);
     }
 
